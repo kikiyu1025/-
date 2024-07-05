@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按钮示例</title>
+    <style>
+        /* 设置页面主体样式 */
+        body {
+            font-family: Arial, sans-serif; /* 字体 */
+            display: flex; /* 使用Flexbox布局 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            height: 100vh; /* 高度设置为视口高度 */
+            margin: 0; /* 去除默认边距 */
+            background: url('1.jpg') no-repeat center center fixed; /* 设置背景图像 */
+            background-size: cover; /* 背景图像覆盖整个背景 */
+            position: relative; /* 设置相对定位 */
+        }
+
+        /* 设置按钮容器样式 */
+        .buttons {
+            display: flex; /* 使用Flexbox布局 */
+            justify-content: center; /* 水平居中 */
+            gap: 125px; /* 按钮之间的间距，扩大5倍 */
+        }
+
+        /* 设置按钮样式 */
+        .buttons button {
+            margin: 25px; /* 按钮之间的间距，扩大5倍 */
+            padding: 30px 60px; /* 内边距，放大3倍 */
+            font-size: 48px; /* 字体大小，放大3倍 */
+            font-family: "KaiTi", "楷体", serif; /* 设置字体为楷体 */
+            color: #555; /* 设置字体颜色为深灰色 */
+            border: none; /* 无边框 */
+            border-radius: 5px; /* 圆角边框 */
+            cursor: pointer; /* 鼠标指针样式 */
+            transition: background 0.3s, transform 0.3s; /* 背景色和变换的过渡效果 */
+            background-color: rgba(255, 255, 255, 0.8); /* 设置按钮背景颜色，带有透明度 */
+        }
+
+        /* 设置按钮悬停样式 */
+        .buttons button:hover {
+            background-color: #007bff; /* 悬停背景色 */
+            color: white; /* 悬停文字颜色 */
+            transform: scale(1.05); /* 悬停时放大 */
+        }
+
+        /* 设置按钮按下样式 */
+        .buttons button:active {
+            background-color: #0056b3; /* 按下背景色 */
+            transform: scale(1); /* 按下时恢复大小 */
+        }
+
+        /* 设置消息文本样式 */
+        .message {
+            margin-top: 60px; /* 上边距，放大3倍 */
+            font-size: 54px; /* 字体大小，放大3倍 */
+            font-family: "KaiTi", "楷体", serif; /* 设置字体为楷体 */
+            color: #555; /* 设置字体颜色为深灰色 */
+        }
+
+        /* 设置弹出框样式 */
+        .popup {
+            position: fixed; /* 固定定位 */
+            top: 50%; /* 垂直居中 */
+            left: 50%; /* 水平居中 */
+            transform: translate(-50%, -50%); /* 将弹出框中心对齐到视口中心 */
+            width: 80%; /* 弹出框宽度，16:9比例 */
+            max-width: 800px; /* 弹出框最大宽度 */
+            aspect-ratio: 16 / 9; /* 设置16:9比例 */
+            background: url('文倩.jpg') no-repeat center center; /* 设置背景图像 */
+            background-size: cover; /* 背景图像覆盖弹出框 */
+            border-radius: 20px; /* 圆角边框 */
+            display: flex; /* 使用Flexbox布局 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            font-size: 24px; /* 字体大小 */
+            font-family: Arial, sans-serif; /* 字体 */
+            color: white; /* 字体颜色 */
+            z-index: 1000; /* 设置较高的层级 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 阴影效果 */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* 文字阴影效果 */
+        }
+
+        /* 设置遮罩层样式 */
+        .overlay-popup {
+            position: fixed; /* 固定定位 */
+            top: 0; /* 覆盖整个视口 */
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+            z-index: 999; /* 设置层级 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 创建按钮容器 -->
+    <div class="buttons">
+        <button onclick="showMessage('文倩')">文倩</button> <!-- 按钮1，显示文倩 -->
+        <button onclick="showMessage('晟')">晟</button> <!-- 按钮2，显示晟 -->
+        <button onclick="showMessage('雅京')">雅京</button> <!-- 按钮3，显示雅京 -->
+        <button onclick="showMessage('招希')">招希</button> <!-- 按钮4，显示招希 -->
+        <button onclick="showMessage('伯远')">伯远</button> <!-- 按钮5，显示伯远 -->
+    </div>
+
+    <!-- 创建消息显示区域 -->
+    <div class="message" id="message"></div>
+
+    <script>
+        // 定义显示消息的函数
+        function showMessage(name) {
+            // 创建遮罩层
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay-popup';
+            document.body.appendChild(overlay);
+
+            // 创建弹出框
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+            popup.innerText = 'Hello World';
+            document.body.appendChild(popup);
+
+            // 点击遮罩层或弹出框时，关闭弹出框和遮罩层
+            overlay.onclick = popup.onclick = () => {
+                document.body.removeChild(overlay);
+                document.body.removeChild(popup);
+            };
+
+            // 显示消息文本
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerText = name;
+            messageDiv.style.opacity = 0; // 设置透明度为0，实现淡入效果
+            setTimeout(() => {
+                messageDiv.style.opacity = 1; // 在100毫秒后将透明度设为1，显示消息
+            }, 100);
+        }
+    </script>
+</body>
+</html>
